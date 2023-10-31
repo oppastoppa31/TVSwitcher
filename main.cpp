@@ -1,21 +1,37 @@
+#include <chrono>
 #include <iostream>
+#include <pigpio.h>
 #include <stdint.h>
-#include <wiringPi.h>
+#include <thread>
+
+using namespace std;
+using namespace this_thread;
+using namespace chrono_literals;
 
 /// @brief Pin number for the button
-constexpr const uint8_t BUTTON_PIN = 0;
+constexpr const uint8_t SWITCHER_PIN = 0;
+
+/// @brief Pin number for the PIR sensor
+constexpr const uint8_t PIR_PIN = 12;
 
 /// @brief Camera motion timeout in seconds
 constexpr const uint32_t MOTION_TIMEOUT = 60 * 10;
 
 /// @brief Setup the program
-void setup() {
-	wiringPiSetup();
-	pinMode(BUTTON_PIN, OUTPUT);
+static void setup() {
+	if (gpioInitialise() < 0) {
+		cerr << "pigpio initialisation failed" << endl;
+		exit(EXIT_FAILURE);
+	}
+	gpioSetMode(SWITCHER_PIN, PI_OUTPUT);
+	gpioSetMode(PIR_PIN, PI_INPUT);
 }
 
-int main(int argc, char const *argv[]) {
+int main([[maybe_unused]] int argc, [[maybe_unused]] char const *argv[]) {
 	setup();
-	/* code */
-	return 0;
+	while (true) {
+		cout << gpioRead(PIR_PIN) << endl;
+		sleep_for(1s);
+	}
+	return EXIT_SUCCESS;
 }

@@ -1,0 +1,27 @@
+#!/bin/sh
+set -e
+
+RPI_IP=@RPI_IP@
+RPI_USER=@RPI_USER@
+RPI_DIR=@RPI_DIR@
+
+echo "\e[1;36m[i] Installing to RasPi..."
+
+if [ ! -f $1 ]; then
+    echo "\e[1;31m[X] Executable not found!\e[0m"
+    return 1
+fi
+
+ping -c1 $RPI_IP >/dev/null 2>&1 || {
+    echo "\e[1;31m[X] RasPi not found!\e[0m"
+    return 1
+}
+
+echo "\e[1;36m[i] Copying to RasPi..."
+
+scp -r $1 $RPI_USER@$RPI_IP:$RPI_DIR >/dev/null 2>&1 || {
+    echo -e "\e[1;31m[X] Copy failed!\e[0m"
+    return 1
+}
+echo "\e[1;32m[+] Copy successful!\e[0m"
+return 0
