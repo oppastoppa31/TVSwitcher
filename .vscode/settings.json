@@ -4,6 +4,7 @@
     "files.associations": {
         "diff": "diff",
         "*.cl": "opencl",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "chrono": "cpp"
     }
 }
