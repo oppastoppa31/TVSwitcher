@@ -24,4 +24,4 @@ target_link_directories(TVSwitcher PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/lib/")
 install(
   CODE "execute_process(COMMAND ${CMAKE_CURRENT_BINARY_DIR}/install.sh ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_NAME})"
 )
-add_definitions(-Wall -Wextra -Wpedantic -Werror -Wno-comment)
+add_definitions(-Wall -Wextra -Wpedantic -Werror -Wno-comment -O3)
